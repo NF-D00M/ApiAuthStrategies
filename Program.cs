@@ -2,8 +2,6 @@ using ApiAuthStrategies.Authentication;
 using ApiAuthStrategies.Authentication.Middleware;
 using ApiAuthStrategies.Authentication.Strategies;
 using ApiAuthStrategies.RateLimiting;
-using Microsoft.AspNetCore.RateLimiting;
-using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +21,7 @@ builder.Services.AddScoped<IAuthStrategy, BasicAuthStrategy>();
 builder.Services.AddScoped<IAuthStrategy, ApiKeyAuthStrategy>();
 builder.Services.AddScoped<IAuthStrategy, JwtAuthStrategy>();
 builder.Services.AddScoped<AuthProcessor>();
+//builder.Services.AddScoped<UserRateLimitPolicy>()
 
 var app = builder.Build();
 

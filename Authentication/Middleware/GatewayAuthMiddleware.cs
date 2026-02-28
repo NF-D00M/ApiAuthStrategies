@@ -1,4 +1,6 @@
-﻿namespace ApiAuthStrategies.Authentication.Middleware
+﻿using System.Security.Claims;
+
+namespace ApiAuthStrategies.Authentication.Middleware
 {
     public class GatewayAuthMiddleware
     {
@@ -17,11 +19,11 @@
                 return;
             }
 
-            var principal = await processor.ProcessAsync(context);
+            ClaimsPrincipal principal = await processor.ProcessAsync(context);
 
             if (principal != null) 
             {
-                var methodUsed = principal.Identity?.AuthenticationType;
+                string methodUsed = principal.Identity?.AuthenticationType;
                 Console.WriteLine($"User authenticated via: {methodUsed}");
 
                 context.User = principal;

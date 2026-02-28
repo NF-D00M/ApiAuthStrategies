@@ -16,7 +16,7 @@ namespace ApiAuthStrategies.Authentication.Strategies
 
         public bool CanHandle(HttpContext context)
         {
-            var authHeader = context.Request.Headers["Authorization"].ToString();
+            string authHeader = context.Request.Headers["Authorization"].ToString();
 
             return authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
                 && authHeader.Split('.').Length == 3;
@@ -24,12 +24,12 @@ namespace ApiAuthStrategies.Authentication.Strategies
 
         public async Task<ClaimsPrincipal?> AuthenticateAsync(HttpContext context)
         {
-            var token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var handler = new JwtSecurityTokenHandler();
+            string token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
             try
             {
-                var validationParameters = new TokenValidationParameters
+                TokenValidationParameters validationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)),
@@ -40,7 +40,7 @@ namespace ApiAuthStrategies.Authentication.Strategies
                     ClockSkew = TimeSpan.Zero // Immediate expiration, no grace period
                 };
 
-                var principal = handler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+                ClaimsPrincipal principal = handler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
 
                 return await Task.FromResult(principal);
             }
@@ -48,7 +48,6 @@ namespace ApiAuthStrategies.Authentication.Strategies
             {
                 return null;
             }
-        }
-               
+        }       
     }
 }

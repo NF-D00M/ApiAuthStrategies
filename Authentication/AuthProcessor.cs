@@ -13,7 +13,7 @@ namespace ApiAuthStrategies.Authentication
 
         public async Task<ClaimsPrincipal?> ProcessAsync(HttpContext context)
         {
-            foreach (var strategy in _strategies)
+            foreach (IAuthStrategy strategy in _strategies)
             {
                 if (strategy.CanHandle(context)) 
                 {

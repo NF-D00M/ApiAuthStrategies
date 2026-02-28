@@ -8,7 +8,7 @@ namespace ApiAuthStrategies.Authentication.Strategies
     {
         public bool CanHandle(HttpContext context)
         {
-            var authHeader = context.Request.Headers["Authorization"].ToString();
+            string authHeader = context.Request.Headers["Authorization"].ToString();
             return authHeader.StartsWith("Basic ", StringComparison.OrdinalIgnoreCase);
         }
 
@@ -34,24 +34,25 @@ namespace ApiAuthStrategies.Authentication.Strategies
                     return null;
                 }
                
-                var credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter)).Split(':');
+                string[] credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter)).Split(':');
 
                 if (credentials.Length != 2)
                 {
                     return null;
                 }
 
-                var username = credentials[0];
-                var password = credentials[1];
+                string username = credentials[0];
+                string password = credentials[1];
 
                 if (username == "admin" && password == "password123")
                 {
-                    var claims = new[] {
+                    Claim[] claims = 
+                    {
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, "Admin")
                     };
 
-                    var identity = new ClaimsIdentity(claims, "Basic");
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, "Basic");
                     return new ClaimsPrincipal(identity);
                 }
             }

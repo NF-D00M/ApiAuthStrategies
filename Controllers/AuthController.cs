@@ -22,15 +22,15 @@ namespace ApiAuthStrategies.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)
         {
-            // Check login credentials
-            var users = new List<(string Name, string Pass, string Role)>
+            // Test credentials
+            List<(string Name, string Pass, string Role)> users = new List<(string Name, string Pass, string Role)>
             {
                 ("admin", "password123", "Admin"),
                 ("alice", "alice123", "User")
             };
 
-            var validUser = users.FirstOrDefault(u =>
-                u.Name == request.Username && 
+            (string Name, string Pass, string Role) validUser = users.FirstOrDefault(u =>
+                u.Name == request.Username &&
                 u.Pass == request.Password
             );
 
@@ -40,17 +40,17 @@ namespace ApiAuthStrategies.Controllers
             }
 
             // Generate token
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            Claim[] claims = 
             {
                 new Claim(JwtRegisteredClaimNames.Sub, "admin"),
                 new Claim(ClaimTypes.Role, "Admin"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var token = new JwtSecurityToken(
+            JwtSecurityToken token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
