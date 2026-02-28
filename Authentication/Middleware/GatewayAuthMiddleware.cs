@@ -21,6 +21,9 @@
 
             if (principal != null) 
             {
+                var methodUsed = principal.Identity?.AuthenticationType;
+                Console.WriteLine($"User authenticated via: {methodUsed}");
+
                 context.User = principal;
                 await _next(context);
             }
