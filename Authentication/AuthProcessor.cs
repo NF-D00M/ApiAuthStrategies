@@ -13,14 +13,14 @@ namespace ApiAuthStrategies.Authentication
 
         public async Task<ClaimsPrincipal?> ProcessAsync(HttpContext context)
         {
-            var strategy = _strategies.FirstOrDefault(s => s.CanHandle(context));
-
-            if (strategy == null)
+            foreach (var strategy in _strategies)
             {
-                return null;
+                if (strategy.CanHandle(context)) 
+                {
+                    return await strategy.AuthenticateAsync(context);
+                }
             }
-
-            return await strategy.AuthenticateAsync(context);
+            return null; 
         }
     }
 }
