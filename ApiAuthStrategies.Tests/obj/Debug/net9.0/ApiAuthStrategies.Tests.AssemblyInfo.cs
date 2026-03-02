@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiAuthStrategies.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+973b694690f7bc8c6bb89945877e58b59baa3c7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiAuthStrategies.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiAuthStrategies.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
